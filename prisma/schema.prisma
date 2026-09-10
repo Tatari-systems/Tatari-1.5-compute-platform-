@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ClientRequirement {
+  id               String   @id @default(uuid()) @db.Uuid
+  contactName      String
+  contactEmail     String
+  companyName      String
+  companyWebsite   String?
+  workloadType     String
+  gpuModel         String
+  quantity         Int
+  region           String
+  timeframeStart   DateTime @db.Timestamptz(3)
+  timeframeEnd     DateTime @db.Timestamptz(3)
+  budgetMinUsd     Decimal? @db.Decimal(18, 2)
+  budgetMaxUsd     Decimal  @db.Decimal(18, 2)
+  minimumUptimeBps Int
+  slaNotes         String?
+  mustHaves        Json
+  niceToHaves      Json
+  additionalNotes  String?
+  status           String   @default("submitted")
+  createdAt        DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime @updatedAt @db.Timestamptz(3)
+  quote            Quote?
+
+  @@index([status, createdAt])
+  @@index([region, gpuModel, timeframeStart, timeframeEnd])
+}
+
+model GpuSupply {
+  id                String          @id @default(uuid()) @db.Uuid
+  vendorId          String
+  gpuModel          String
+  quantityAvailable Int
+  region            String
+  hourlyPriceUsd    Decimal         @db.Decimal(18, 6)
+  minimumUptimeBps  Int
+  availableFrom     DateTime        @db.Timestamptz(3)
+  availableUntil    DateTime        @db.Timestamptz(3)
+  status            String          @default("available")
+  sourceType        String
+  isTestData        Boolean         @default(false)
+  sourceReference   String?
+  lastVerifiedAt    DateTime?       @db.Timestamptz(3)
+  metadata          Json?
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  quoteLineItems    QuoteLineItem[]
+
+  @@index([status, region, gpuModel])
+  @@index([availableFrom, availableUntil])
+  @@index([vendorId])
+}
+
+model Quote {
+  id                    String            @id @default(uuid()) @db.Uuid
+  requirementId         String            @unique @db.Uuid
+  status                String            @default("pending_approval")
+  totalEstimatedCostUsd Decimal           @db.Decimal(18, 2)
+  expiresAt             DateTime          @db.Timestamptz(3)
+  createdAt             DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime          @updatedAt @db.Timestamptz(3)
+  requirement           ClientRequirement @relation(fields: [requirementId], references: [id], onDelete: Restrict)
+  lineItems             QuoteLineItem[]
+  commitment            Commitment?
+
+  @@index([status, createdAt])
+}
+
+model QuoteLineItem {
+  id                    String     @id @default(uuid()) @db.Uuid
+  quoteId               String     @db.Uuid
+  supplyId              String?    @db.Uuid
+  vendorId              String
+  gpuModel              String
+  region                String
+  quantity              Int
+  hourlyPriceUsd        Decimal    @db.Decimal(18, 6)
+  billableHours         Int
+  supplierSubtotalUsd   Decimal    @db.Decimal(18, 2)
+  marginBps             Int
+  platformFeeUsd        Decimal    @db.Decimal(18, 2)
+  totalEstimatedCostUsd Decimal    @db.Decimal(18, 2)
+  minimumUptimeBps      Int
+  createdAt             DateTime   @default(now()) @db.Timestamptz(3)
+  quote                 Quote      @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  supply                GpuSupply? @relation(fields: [supplyId], references: [id], onDelete: SetNull)
+
+  @@index([quoteId])
+  @@index([supplyId])
+}
+
+model Commitment {
+  id        String   @id @default(uuid()) @db.Uuid
+  quoteId   String   @unique @db.Uuid
+  status    String   @default("pending_delivery")
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Restrict)
+
+  @@index([status, createdAt])
+}
+
+model InternalUser {
+  id          String     @id @default(uuid()) @db.Uuid
+  email       String     @unique
+  displayName String?
+  role        String     @default("reviewer")
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @db.Timestamptz(3)
+  auditLogs   AuditLog[]
+
+  @@index([role, isActive])
+}
+
+model AuditLog {
+  id           String        @id @default(uuid()) @db.Uuid
+  entityType   String
+  entityId     String
+  action       String
+  actorId      String?       @db.Uuid
+  beforeStatus String?
+  afterStatus  String?
+  metadata     Json?
+  createdAt    DateTime      @default(now()) @db.Timestamptz(3)
+  actor        InternalUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorId, createdAt])
+}

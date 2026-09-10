@@ -14,6 +14,8 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      DIRECT_URL: postgresql://ci:ci@localhost:5432/tatari_ci
 
     steps:
       - name: Check out repository
@@ -32,6 +34,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Validate Prisma schema
+        run: pnpm db:validate
+
+      - name: Generate Prisma client
+        run: pnpm db:generate
 
       - name: Check formatting
         run: pnpm format:check
