@@ -32,9 +32,9 @@ export function canTransitionRequirement(
   from: RequirementStatus,
   to: RequirementStatus,
 ): boolean {
-  return (requirementTransitions[from] as readonly RequirementStatus[]).includes(
-    to,
-  );
+  return (
+    requirementTransitions[from] as readonly RequirementStatus[]
+  ).includes(to);
 }
 
 export function canTransitionQuote(

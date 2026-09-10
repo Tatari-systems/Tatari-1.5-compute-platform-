@@ -11,12 +11,7 @@ export const SUPPLY_STATUSES = [
 export const SUPPLY_SOURCE_TYPES = ["seed", "manual"] as const;
 
 type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+  string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 const JsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
   z.union([
@@ -29,8 +24,7 @@ const JsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
   ]),
 );
 
-const utcDateTimeSchema = z
-  .iso
+const utcDateTimeSchema = z.iso
   .datetime({ offset: true })
   .transform((value) => new Date(value));
 

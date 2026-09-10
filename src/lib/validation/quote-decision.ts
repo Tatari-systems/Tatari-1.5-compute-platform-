@@ -16,6 +16,4 @@ export const QuoteDecisionCommandSchema = z.discriminatedUnion("decision", [
   rejectQuoteSchema,
 ]);
 
-export type QuoteDecisionCommand = z.infer<
-  typeof QuoteDecisionCommandSchema
->;
+export type QuoteDecisionCommand = z.infer<typeof QuoteDecisionCommandSchema>;

@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { compareDecimalStrings, DecimalStringSchema, UsdAmountSchema } from "./money";
+import {
+  compareDecimalStrings,
+  DecimalStringSchema,
+  UsdAmountSchema,
+} from "./money";
 
 const positiveDecimalSchema = DecimalStringSchema.refine(
   (value) => compareDecimalStrings(value, "0") > 0,
@@ -35,12 +39,6 @@ export const CreateQuoteCommandSchema = z.strictObject({
   lineItems: z.array(QuoteLineItemSnapshotSchema).min(1).max(100),
 });
 
-export type QuoteLineItemSnapshot = z.infer<
-  typeof QuoteLineItemSnapshotSchema
->;
-export type CreateQuoteCommandInput = z.input<
-  typeof CreateQuoteCommandSchema
->;
-export type CreateQuoteCommand = z.output<
-  typeof CreateQuoteCommandSchema
->;
+export type QuoteLineItemSnapshot = z.infer<typeof QuoteLineItemSnapshotSchema>;
+export type CreateQuoteCommandInput = z.input<typeof CreateQuoteCommandSchema>;
+export type CreateQuoteCommand = z.output<typeof CreateQuoteCommandSchema>;

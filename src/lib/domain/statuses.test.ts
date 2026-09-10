@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  canTransitionQuote,
-  canTransitionRequirement,
-} from "./statuses";
+import { canTransitionQuote, canTransitionRequirement } from "./statuses";
 
 describe("requirement transitions", () => {
   it("allows submitted requirements to reach a terminal matching result", () => {

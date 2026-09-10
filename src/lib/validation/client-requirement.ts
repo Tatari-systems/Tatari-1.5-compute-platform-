@@ -28,8 +28,7 @@ const optionalWebsiteSchema = z
   .optional()
   .transform((value) => value || undefined);
 
-const utcDateTimeSchema = z
-  .iso
+const utcDateTimeSchema = z.iso
   .datetime({ offset: true })
   .transform((value) => new Date(value));
 
@@ -100,10 +99,6 @@ export const ClientRequirementSchema = z
     }
   });
 
-export type ClientRequirementInput = z.input<
-  typeof ClientRequirementSchema
->;
+export type ClientRequirementInput = z.input<typeof ClientRequirementSchema>;
 export type ClientRequirement = z.output<typeof ClientRequirementSchema>;
-export type RequirementCriterion = z.infer<
-  typeof RequirementCriterionSchema
->;
+export type RequirementCriterion = z.infer<typeof RequirementCriterionSchema>;

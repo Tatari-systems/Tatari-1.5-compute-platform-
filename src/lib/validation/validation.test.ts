@@ -30,7 +30,9 @@ describe("ClientRequirementSchema", () => {
       timeframeStart: "2026-10-01T03:00:00+03:00",
     });
 
-    expect(result.timeframeStart.toISOString()).toBe("2026-10-01T00:00:00.000Z");
+    expect(result.timeframeStart.toISOString()).toBe(
+      "2026-10-01T00:00:00.000Z",
+    );
   });
 
   it("rejects an inverted budget with a field-level error", () => {
@@ -187,7 +189,9 @@ describe("quote commands", () => {
 
 describe("money and status boundaries", () => {
   it("compares decimal strings without floating-point arithmetic", () => {
-    expect(compareDecimalStrings("1000000000000000000.01", "1000000000000000000.00")).toBe(1);
+    expect(
+      compareDecimalStrings("1000000000000000000.01", "1000000000000000000.00"),
+    ).toBe(1);
     expect(compareDecimalStrings("2.5", "2.500000")).toBe(0);
     expect(compareDecimalStrings("0.99", "1")).toBe(-1);
   });
