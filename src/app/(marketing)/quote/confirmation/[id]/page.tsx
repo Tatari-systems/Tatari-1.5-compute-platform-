@@ -45,34 +45,36 @@ export default async function RequirementConfirmationPage({
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <section className="space-y-6">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-500">
-          Request received
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 sm:text-4xl">
-          We have your request
-        </h1>
-        <p className="max-w-2xl text-base leading-7 text-zinc-400">
-          Tatari will review this request. This confirmation does not mean a
-          match, quote, price, or response time.
-        </p>
-        <dl className="grid gap-4 border border-zinc-800 bg-zinc-950 p-6 sm:grid-cols-2">
+    <main className="mx-auto max-w-3xl px-6 py-14">
+      <section className="space-y-8">
+        <div className="space-y-4">
+          <p className="font-brand text-xs font-semibold uppercase tracking-[0.28em] text-text-faint">
+            Request received
+          </p>
+          <h1 className="font-display text-4xl leading-tight text-text sm:text-5xl">
+            We have your request
+          </h1>
+          <p className="max-w-2xl text-base leading-7 text-text-muted">
+            Tatari will review this request. This confirmation does not mean a
+            match, quote, price, or response time.
+          </p>
+        </div>
+        <dl className="grid gap-6 rounded-card border border-border bg-surface p-6 sm:grid-cols-2">
           <div>
-            <dt className="text-sm text-zinc-500">Request reference</dt>
-            <dd className="mt-1 font-medium text-zinc-100">
+            <dt className="text-sm text-text-faint">Request reference</dt>
+            <dd className="mt-1 font-medium tracking-wide text-text">
               {confirmation.reference}
             </dd>
           </div>
           <div>
-            <dt className="text-sm text-zinc-500">Submitted</dt>
-            <dd className="mt-1 font-medium text-zinc-100">
+            <dt className="text-sm text-text-faint">Submitted</dt>
+            <dd className="mt-1 font-medium text-text">
               {formatUtc(confirmation.createdAt)} UTC
             </dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-sm text-zinc-500">Summary</dt>
-            <dd className="mt-1 text-zinc-200">
+            <dt className="text-sm text-text-faint">Summary</dt>
+            <dd className="mt-1 leading-7 text-text-muted">
               {confirmation.summary.quantity} × {confirmation.summary.gpuModel}{" "}
               in {confirmation.summary.region} for{" "}
               {workloadLabels[confirmation.summary.workloadType] ??
@@ -84,11 +86,14 @@ export default async function RequirementConfirmationPage({
             </dd>
           </div>
         </dl>
-        <p className="text-sm leading-6 text-zinc-400">
+        <p className="text-sm leading-6 text-text-muted">
           If this request needs a correction, contact the Tatari team and
           include your request reference.
         </p>
-        <Link href="/quote" className="inline-block text-sm text-blue-400">
+        <Link
+          href="/quote"
+          className="inline-flex text-sm text-accent transition-colors hover:text-text"
+        >
           Submit another request
         </Link>
       </section>

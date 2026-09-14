@@ -13,10 +13,11 @@ import {
 import { WORKLOAD_TYPES } from "@/lib/validation";
 
 const fieldClass =
-  "mt-1 w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-zinc-100 outline-none focus:border-blue-500";
-const labelClass = "text-sm font-medium text-zinc-200";
-const errorClass = "mt-1 text-sm text-red-400";
-const helpClass = "mt-1 text-sm text-zinc-500";
+  "mt-1.5 w-full rounded-control border border-border bg-surface px-3 py-2.5 text-text outline-none transition-colors placeholder:text-text-faint focus:border-accent";
+const labelClass = "text-sm font-medium text-text";
+const errorClass = "mt-1.5 text-sm text-danger";
+const helpClass = "mt-1.5 text-sm text-text-faint";
+const cardClass = "rounded-card border border-border bg-surface p-5 sm:p-6";
 
 const workloadLabels: Record<(typeof WORKLOAD_TYPES)[number], string> = {
   ai_training: "AI training",
@@ -67,7 +68,7 @@ function CriterionFields({
   onRemove: (index: number) => void;
 }) {
   return (
-    <fieldset className="space-y-3">
+    <fieldset className={`${cardClass} space-y-3`}>
       <legend className={labelClass}>{title}</legend>
       <p className={helpClass}>{description}</p>
       {fields.map((field, index) => (
@@ -110,7 +111,7 @@ function CriterionFields({
           </div>
           <button
             type="button"
-            className="mt-1 rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:border-zinc-500"
+            className="mt-1 rounded-control border border-border px-3 py-2 text-sm text-text-muted transition-colors hover:border-accent hover:text-text"
             onClick={() => onRemove(index)}
           >
             Remove
@@ -119,7 +120,7 @@ function CriterionFields({
       ))}
       <button
         type="button"
-        className="text-sm text-blue-400 hover:text-blue-300"
+        className="text-sm text-accent transition-colors hover:text-text"
         onClick={onAdd}
       >
         Add {title.toLowerCase()}
@@ -170,7 +171,7 @@ export function RequirementForm() {
 
   return (
     <form
-      className="mt-10 space-y-8"
+      className="mt-10 space-y-6"
       noValidate
       onSubmit={(event) => {
         void onSubmit(event);
@@ -182,7 +183,7 @@ export function RequirementForm() {
         </p>
       ) : null}
 
-      <fieldset className="grid gap-5 sm:grid-cols-2">
+      <fieldset className={`${cardClass} grid gap-5 sm:grid-cols-2`}>
         <legend className="sr-only">Contact</legend>
         <div className="sm:col-span-2">
           <label className={labelClass} htmlFor="contactName">
@@ -265,7 +266,7 @@ export function RequirementForm() {
         </div>
       </fieldset>
 
-      <fieldset className="grid gap-5 sm:grid-cols-2">
+      <fieldset className={`${cardClass} grid gap-5 sm:grid-cols-2`}>
         <legend className="sr-only">Compute request</legend>
         <div>
           <label className={labelClass} htmlFor="workloadType">
@@ -484,7 +485,7 @@ export function RequirementForm() {
         onRemove={niceToHaves.remove}
       />
 
-      <div>
+      <div className={cardClass}>
         <label className={labelClass} htmlFor="additionalNotes">
           Additional notes
         </label>
@@ -507,7 +508,7 @@ export function RequirementForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-control bg-accent-strong px-4 py-2.5 text-sm font-medium text-text transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? "Submitting…" : "Submit request"}
       </button>
