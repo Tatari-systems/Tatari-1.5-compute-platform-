@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-16">
@@ -22,6 +24,12 @@ export default function Home() {
           This foundation does not include marketplace browsing, live provider
           inventory, provisioning, billing, or white-label features.
         </p>
+        <Link
+          href="/quote"
+          className="inline-flex text-sm font-medium text-blue-400 hover:text-blue-300"
+        >
+          Submit a GPU requirement
+        </Link>
       </section>
     </main>
   );

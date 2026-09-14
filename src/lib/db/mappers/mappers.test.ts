@@ -107,8 +107,6 @@ describe("database boundary mappers", () => {
       action: "created",
       beforeStatus: null,
       afterStatus: "submitted",
-      metadata: undefined,
-      actor: undefined,
     });
   });
 });

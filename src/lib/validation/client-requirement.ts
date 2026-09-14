@@ -43,7 +43,9 @@ export const ClientRequirementSchema = z
     contactEmail: z.email("Enter a valid email address"),
     companyName: z.string().trim().min(1, "Company name is required").max(160),
     companyWebsite: optionalWebsiteSchema,
-    workloadType: z.enum(WORKLOAD_TYPES),
+    workloadType: z.enum(WORKLOAD_TYPES, {
+      error: "Select a workload type",
+    }),
     gpuModel: z.string().trim().min(1, "GPU model is required").max(80),
     quantity: z.int().min(1, "Quantity must be at least 1").max(10_000),
     region: z.string().trim().min(1, "Region is required").max(100),

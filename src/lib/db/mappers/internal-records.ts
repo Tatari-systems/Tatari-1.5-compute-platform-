@@ -29,17 +29,14 @@ export function buildCommitmentCreate(
 
 export function buildAuditLogCreate(
   options: AuditLogCreateOptions,
-): Prisma.AuditLogCreateInput {
+): Prisma.AuditLogUncheckedCreateInput {
   return {
     entityType: options.entityType,
     entityId: options.entityId,
     action: options.action,
     beforeStatus: options.beforeStatus,
     afterStatus: options.afterStatus,
-    metadata: options.metadata,
-    actor:
-      options.actorId === undefined
-        ? undefined
-        : { connect: { id: options.actorId } },
+    ...(options.metadata === undefined ? {} : { metadata: options.metadata }),
+    ...(options.actorId === undefined ? {} : { actorId: options.actorId }),
   };
 }
