@@ -42,12 +42,22 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/docs 
+# Product/context docs stay local. Files already tracked under docs/
+# need `git rm -r --cached docs` before ignore takes effect.
+/docs
+
+# Agent-generated briefs (not product source)
+TASKS-SECOND-DEV.md
+BUILD_SUMMARY.md
 
 # Playwright
 /test-results/
 /playwright-report/
 /blob-report/
+/.playwright-mcp/
+
+# Cursor
+.cursor/
 
 # Windows
 Thumbs.db

@@ -270,6 +270,7 @@ export type QuoteReview = {
     status: string;
     totalEstimatedCostUsd: string;
     expiresAt: string;
+    commitment: { id: string; status: string } | null;
     lineItems: Array<{
       gpuModel: string;
       region: string;
@@ -304,7 +305,10 @@ export async function getQuoteReview(
     where: { id: requirementId },
     include: {
       quote: {
-        include: { lineItems: { orderBy: { createdAt: "asc" } } },
+        include: {
+          lineItems: { orderBy: { createdAt: "asc" } },
+          commitment: { select: { id: true, status: true } },
+        },
       },
     },
   });
@@ -360,6 +364,12 @@ export async function getQuoteReview(
             requirement.quote.totalEstimatedCostUsd,
           ),
           expiresAt: requirement.quote.expiresAt.toISOString(),
+          commitment: requirement.quote.commitment
+            ? {
+                id: requirement.quote.commitment.id,
+                status: requirement.quote.commitment.status,
+              }
+            : null,
           lineItems: requirement.quote.lineItems.map((item) => ({
             gpuModel: item.gpuModel,
             region: item.region,

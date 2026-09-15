@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { requireConsoleActor } from "@/lib/auth/console";
+import { canApprove } from "@/lib/domain/roles";
 import { getQuoteReview } from "@/lib/matching/proposeQuote";
 import { isRequirementId } from "@/lib/requirements/reference";
+
+import { QuoteDecisionForm } from "./quote-decision-form";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +31,7 @@ export default async function InternalQuotePage({
 }: {
   params: Promise<{ requestId: string }>;
 }) {
+  const actor = await requireConsoleActor();
   const { requestId } = await params;
 
   if (!isRequirementId(requestId)) {
@@ -135,7 +140,30 @@ export default async function InternalQuotePage({
                   {formatUtc(review.quote.expiresAt)} UTC
                 </dd>
               </div>
+              {review.quote.commitment ? (
+                <div className="sm:col-span-2">
+                  <dt className="text-sm text-text-faint">Commitment</dt>
+                  <dd className="mt-1 text-text">
+                    {review.quote.commitment.status.replaceAll("_", " ")} ·{" "}
+                    {review.quote.commitment.id}
+                  </dd>
+                </div>
+              ) : null}
             </dl>
+            {review.quote.status === "pending_approval" &&
+            canApprove(actor.role) ? (
+              <QuoteDecisionForm quoteId={review.quote.id} />
+            ) : review.quote.status === "pending_approval" ? (
+              <p className="text-sm text-text-muted">
+                Reviewers can view this quote. Approvers and admins can decide
+                it.
+              </p>
+            ) : (
+              <p className="text-sm text-text-muted">
+                This quote is {review.quote.status.replaceAll("_", " ")} and
+                cannot be decided again.
+              </p>
+            )}
           </section>
         ) : (
           <section className="rounded-card border border-border bg-surface p-6">
