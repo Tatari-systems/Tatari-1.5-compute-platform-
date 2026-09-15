@@ -13,6 +13,7 @@ import {
   buildCommitmentCreate,
   mapClientRequirementCreate,
   mapGpuSupplyCreate,
+  mapInternalUserCreate,
   mapQuoteCreate,
 } from ".";
 
@@ -107,6 +108,24 @@ describe("database boundary mappers", () => {
       action: "created",
       beforeStatus: null,
       afterStatus: "submitted",
+    });
+  });
+
+  it("maps an internal user with a normalized email", () => {
+    expect(
+      mapInternalUserCreate({
+        id: "00000000-0000-4000-8000-000000000101",
+        email: "  Reviewer@Tatari.TEST ",
+        displayName: "Seed Reviewer",
+        role: "reviewer",
+        isActive: true,
+      }),
+    ).toEqual({
+      id: "00000000-0000-4000-8000-000000000101",
+      email: "reviewer@tatari.test",
+      displayName: "Seed Reviewer",
+      role: "reviewer",
+      isActive: true,
     });
   });
 });

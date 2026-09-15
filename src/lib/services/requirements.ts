@@ -79,7 +79,10 @@ type RequirementWriter = {
       data: Prisma.AuditLogUncheckedCreateInput;
     }) => Promise<unknown>;
   };
-  $transaction: <T>(operations: readonly T[]) => Promise<T[]>;
+  $transaction: <T>(
+    operations: readonly T[],
+    options?: { maxWait?: number; timeout?: number },
+  ) => Promise<T[]>;
 };
 
 function decimalToString(value: Prisma.Decimal | string): string {
@@ -130,22 +133,25 @@ export async function submitClientRequirement(
   };
 
   try {
-    const [requirement] = (await prisma.$transaction([
-      prisma.clientRequirement.create({
-        data,
-        select: requirementSelect,
-      }),
-      prisma.auditLog.create({
-        data: buildAuditLogCreate({
-          entityType: "client_requirement",
-          entityId: id,
-          action: "created",
-          beforeStatus: null,
-          afterStatus: "submitted",
-          metadata: { source: "public_form" },
+    const [requirement] = (await prisma.$transaction(
+      [
+        prisma.clientRequirement.create({
+          data,
+          select: requirementSelect,
         }),
-      }),
-    ])) as [RequirementRecord, unknown];
+        prisma.auditLog.create({
+          data: buildAuditLogCreate({
+            entityType: "client_requirement",
+            entityId: id,
+            action: "created",
+            beforeStatus: null,
+            afterStatus: "submitted",
+            metadata: { source: "public_form" },
+          }),
+        }),
+      ],
+      { maxWait: 15_000, timeout: 20_000 },
+    )) as [RequirementRecord, unknown];
 
     return {
       ok: true,

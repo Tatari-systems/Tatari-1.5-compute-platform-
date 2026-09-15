@@ -5,6 +5,7 @@ import {
   CommitmentStatusSchema,
   CreateQuoteCommandSchema,
   GpuSupplySchema,
+  InternalUserInputSchema,
   QuoteDecisionCommandSchema,
   RequirementStatusSchema,
   compareDecimalStrings,
@@ -205,5 +206,20 @@ describe("money and status boundaries", () => {
     expect(CommitmentStatusSchema.safeParse("provisioning").success).toBe(
       false,
     );
+  });
+});
+
+describe("InternalUserInputSchema", () => {
+  it("normalizes email and defaults role to reviewer", () => {
+    expect(
+      InternalUserInputSchema.parse({
+        email: "  Approver@Tatari.TEST ",
+        isActive: true,
+      }),
+    ).toMatchObject({
+      email: "approver@tatari.test",
+      role: "reviewer",
+      isActive: true,
+    });
   });
 });
