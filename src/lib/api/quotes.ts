@@ -18,6 +18,7 @@ export async function decideQuoteAction(
   });
 
   if (result.ok) {
+    revalidatePath("/quotes");
     revalidatePath(`/quotes/${result.requirementId}`);
   }
 

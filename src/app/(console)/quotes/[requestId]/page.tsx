@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -62,6 +63,12 @@ export default async function InternalQuotePage({
               ? ` · Quote ${review.quote.status.replaceAll("_", " ")}`
               : ""}
           </p>
+          <Link
+            href="/quotes"
+            className="inline-flex text-sm text-accent transition-colors hover:text-text"
+          >
+            Back to quote list
+          </Link>
         </div>
 
         <dl className="grid gap-6 rounded-card border border-border bg-surface p-6 sm:grid-cols-2">
