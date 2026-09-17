@@ -1,4 +1,4 @@
-const DEFAULT_CALLBACK_URL = "/";
+const DEFAULT_CALLBACK_URL = "/quotes";
 
 function toInternalPath(value: string): string | null {
   if (

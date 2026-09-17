@@ -8,15 +8,10 @@ import {
 
 export async function requireConsoleActor(): Promise<ConsoleActor> {
   const session = await auth();
-
-  if (!session?.user?.email) {
-    redirect("/login");
-  }
-
   const actor = await resolveConsoleActor(session);
 
   if (!actor) {
-    redirect("/login?error=AccessDenied");
+    redirect("/login");
   }
 
   return actor;

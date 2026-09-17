@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { SiteHeader } from "@/components/site-header";
 
-export default function MarketingLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (

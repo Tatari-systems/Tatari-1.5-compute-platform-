@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { GoogleSignInButton, SignOutButton } from "@/components/auth-buttons";
+import { TatariLogo } from "@/components/tatari-logo";
 import { safeCallbackUrl } from "@/lib/auth/callback-url";
 import { resolveConsoleActor } from "@/lib/auth/internal-users";
 import { loginErrorMessage } from "@/lib/auth/login-errors";
@@ -24,7 +25,7 @@ export default async function LoginPage({
   const actor = await resolveConsoleActor(session);
 
   if (actor) {
-    redirect(callbackUrl === "/" ? "/" : callbackUrl);
+    redirect(callbackUrl === "/" ? "/quotes" : callbackUrl);
   }
 
   const errorMessage = params.error
@@ -36,16 +37,17 @@ export default async function LoginPage({
     <main className="mx-auto flex min-h-[calc(100vh-65px)] max-w-xl items-center px-6 py-14">
       <section className="w-full space-y-8">
         <div className="space-y-4">
+          <TatariLogo size={56} priority />
           <p className="font-brand text-xs font-semibold uppercase tracking-[0.28em] text-text-faint">
             Internal
           </p>
           <h1 className="font-display text-4xl leading-tight text-text sm:text-5xl">
-            Sign in to review quotes
+            Sign in to Tatari
           </h1>
           <p className="max-w-md text-base leading-7 text-text-muted">
-            Use an approved Tatari Google account. A matching email in the
-            internal user list is required. A company domain alone is not
-            enough.
+            Use an approved Tatari Google account for quote review. A matching
+            email in the internal user list is required. A company domain alone
+            is not enough.
           </p>
         </div>
 

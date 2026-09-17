@@ -27,8 +27,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    authorized({ auth: session }) {
-      return Boolean(session?.user);
+    authorized({ auth, request }) {
+      if (!request.nextUrl.pathname.startsWith("/quotes")) {
+        return true;
+      }
+
+      return Boolean(auth?.user);
     },
     async signIn({ user, profile }) {
       if (!user.email || !isGoogleEmailVerified(profile)) {

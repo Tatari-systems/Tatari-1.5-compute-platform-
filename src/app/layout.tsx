@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Instrument_Serif, Inter, Montserrat } from "next/font/google";
 import type { ReactNode } from "react";
 
-import { SiteHeader } from "@/components/site-header";
-
 import "./globals.css";
 
 const inter = Inter({
@@ -25,6 +23,10 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Tatari Release A",
   description: "Internal quote-to-commit workflow foundation.",
+  icons: {
+    icon: "/tatari-logo.jpg",
+    apple: "/tatari-logo.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -35,10 +37,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${instrumentSerif.variable} ${montserrat.variable}`}
     >
-      <body className="bg-bg font-sans text-text">
-        <SiteHeader />
-        {children}
-      </body>
+      <body className="bg-bg font-sans text-text">{children}</body>
     </html>
   );
 }

@@ -78,9 +78,9 @@ describe("internal user access", () => {
 
 describe("login helpers", () => {
   it("rejects unsafe callback URLs", () => {
-    expect(safeCallbackUrl("//evil.example")).toBe("/");
-    expect(safeCallbackUrl("/login")).toBe("/");
-    expect(safeCallbackUrl("/api/auth/session")).toBe("/");
+    expect(safeCallbackUrl("//evil.example")).toBe("/quotes");
+    expect(safeCallbackUrl("/login")).toBe("/quotes");
+    expect(safeCallbackUrl("/api/auth/session")).toBe("/quotes");
     expect(
       safeCallbackUrl(
         "http://localhost:3000/quotes/83ae0356-b070-4bab-ba1a-efb72080aa82",

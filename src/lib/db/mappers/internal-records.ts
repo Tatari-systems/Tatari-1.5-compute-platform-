@@ -4,9 +4,16 @@ export const AUDIT_ENTITY_TYPES = [
   "client_requirement",
   "quote",
   "commitment",
+  "project",
+  "task",
 ] as const;
 
-export const AUDIT_ACTIONS = ["created", "status_changed"] as const;
+export const AUDIT_ACTIONS = [
+  "created",
+  "status_changed",
+  "updated",
+  "archived",
+] as const;
 
 type AuditLogCreateOptions = {
   entityType: (typeof AUDIT_ENTITY_TYPES)[number];
