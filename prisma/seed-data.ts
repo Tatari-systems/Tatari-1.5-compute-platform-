@@ -1,4 +1,5 @@
 import type { GpuSupplyInput } from "../src/lib/validation/gpu-supply";
+import type { InternalUserInput } from "../src/lib/validation/internal-user";
 
 const commonSupply = {
   sourceType: "seed",
@@ -93,3 +94,27 @@ export const seedGpuSupplies = [
     metadata: { minimum_vram_gb: "80", interconnect: "nvlink" },
   },
 ] satisfies readonly GpuSupplyInput[];
+
+export const seedInternalUsers = [
+  {
+    id: "00000000-0000-4000-8000-000000000101",
+    email: "seed.admin@example.com",
+    displayName: "Seed Admin",
+    role: "admin",
+    isActive: true,
+  },
+  {
+    id: "00000000-0000-4000-8000-000000000102",
+    email: "seed.approver@example.com",
+    displayName: "Seed Approver",
+    role: "approver",
+    isActive: true,
+  },
+  {
+    id: "00000000-0000-4000-8000-000000000103",
+    email: "seed.reviewer@example.com",
+    displayName: "Seed Reviewer",
+    role: "reviewer",
+    isActive: true,
+  },
+] satisfies readonly InternalUserInput[];
