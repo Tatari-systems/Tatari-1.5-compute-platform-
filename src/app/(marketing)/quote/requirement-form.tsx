@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { submitRequirementAction } from "@/lib/api/requirements";
@@ -129,8 +130,17 @@ function CriterionFields({
   );
 }
 
+function useIsClient(): boolean {
+  return useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+}
+
 export function RequirementForm() {
   const router = useRouter();
+  const ready = useIsClient();
   const {
     register,
     control,
@@ -173,6 +183,7 @@ export function RequirementForm() {
     <form
       className="mt-10 space-y-6"
       noValidate
+      data-ready={ready ? "true" : "false"}
       onSubmit={(event) => {
         void onSubmit(event);
       }}
@@ -507,7 +518,7 @@ export function RequirementForm() {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !ready}
         className="rounded-control bg-accent-strong px-4 py-2.5 text-sm font-medium text-text transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? "Submitting…" : "Submit request"}

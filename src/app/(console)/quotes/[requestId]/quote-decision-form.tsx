@@ -18,20 +18,22 @@ export function QuoteDecisionForm({ quoteId }: { quoteId: string }) {
     setFormError(null);
     setPending(decision);
 
-    const result = await decideQuoteAction(
-      decision === "approve"
-        ? { quoteId, decision }
-        : { quoteId, decision, reason },
-    );
+    try {
+      const result = await decideQuoteAction(
+        decision === "approve"
+          ? { quoteId, decision }
+          : { quoteId, decision, reason },
+      );
 
-    setPending(null);
+      if (!result.ok) {
+        setFormError(result.formError);
+        return;
+      }
 
-    if (!result.ok) {
-      setFormError(result.formError);
-      return;
+      router.refresh();
+    } finally {
+      setPending(null);
     }
-
-    router.refresh();
   }
 
   return (
