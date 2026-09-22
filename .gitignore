@@ -45,6 +45,7 @@ next-env.d.ts
 # Product/context docs stay local. Files already tracked under docs/
 # need `git rm -r --cached docs` before ignore takes effect.
 /docs
+/my_docs
 
 # Agent-generated briefs (not product source)
 TASKS-SECOND-DEV.md
